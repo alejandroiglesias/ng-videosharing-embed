@@ -2,7 +2,7 @@ angular.module('videosharing-embed').directive('embedVideo', [ '$filter' , 'Regi
 	'use strict';
     return {
         restrict: "E",
-        template: '<iframe data-ng-attr-id="{{id}}" width="{{width}}" height="{{height}}" data-ng-src="{{trustedVideoSrc}}" allowfullscreen frameborder="0"></iframe>',
+        template: '<iframe width="{{width}}" height="{{height}}" data-ng-src="{{trustedVideoSrc}}" allowfullscreen frameborder="0"></iframe>',
         scope: {
             height: '@',
             width: '@',
@@ -21,7 +21,11 @@ angular.module('videosharing-embed').directive('embedVideo', [ '$filter' , 'Regi
             });
 
             $attrs.$observe('iframeId', function(id) {
-                $scope.id = id;
+                if (!id) {
+                    $element.find('iframe').removeAttr('id');
+                    return;
+                }
+                $element.find('iframe').attr('id', id);
             });
 
             //handle the use of both ng-href and href
